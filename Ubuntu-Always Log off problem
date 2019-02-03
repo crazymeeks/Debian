@@ -1,0 +1,6 @@
+Solution:
+Ubuntu 16.04
+
+1. Ctrl + Alt + F6
+2. rm -v .Xauthority
+3. service lightdm restart

@@ -1,0 +1,6 @@
+
+server {
+    server_name example.com;
+    # Tells browser to redirect all request from http://example.com -> https://example2.com
+    rewrite ^/$ http://example2.com redirect;
+}

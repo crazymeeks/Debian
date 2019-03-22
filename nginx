@@ -1,6 +1,23 @@
 
 server {
     server_name example.com;
+    
+       # Allow specific IP only
+       if ($http_host ~ "yourdomain.hypernode.io:8443")  {
+          set $block_me_now A;
+        }
+
+        if ($remote_addr != YOURIP) {
+          set $block_me_now "${block_me_now}B";
+        }
+
+
+        if ($block_me_now = AB) {
+            return 403;
+            break;
+        }
+        # End Allow specific IP
+    
     # Tells browser to redirect all request from http://example.com -> https://example2.com
     rewrite ^/$ http://example2.com redirect;
 }

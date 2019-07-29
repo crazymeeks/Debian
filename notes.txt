@@ -1,2 +1,5 @@
 # Copy files from server(no need to compress)
 rsync -arvz -e 'ssh -p <port-number>' --progress user@remote-server:/path/to/remote/folder /path/to/local/folder
+
+# Generate HPKP
+https://report-uri.com/home/pkp_hash

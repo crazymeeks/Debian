@@ -1,22 +1,36 @@
+# create a file in /etc/nginx/snippets/phpmyadmin.conf
+# and add this code
 server {
-    listen 8080;
-    listen [::]:8080;
-    location /phpmyadmin {
-        root /usr/share/;
-        index index.php index.html index.htm;
-        location ~ ^/phpmyadmin/(.+\.php)$ {
-            try_files $uri =404;
-            root /usr/share/;
-            fastcgi_pass unix:/run/php/php7.2-fpm.sock;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include /etc/nginx/fastcgi_params;
-        }
+  listen 80;
+  listen [::]:80;
+  server_name pma.example.com;
+  root /usr/share/phpmyadmin/;
+  index index.php index.html index.htm index.nginx-debian.html;
 
-        location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
-            root /usr/share/;
-        }
-    }
+  access_log /var/log/nginx/phpmyadmin_access.log;
+  error_log /var/log/nginx/phpmyadmin_error.log;
+
+  location / {
+    try_files $uri $uri/ /index.php;
+  }
+
+  location ~ ^/(doc|sql|setup)/ {
+    deny all;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    include snippets/fastcgi-php.conf;
+  }
+
+  location ~ /\.ht {
+    deny all;
+  }
 }
 
-https://linuxize.com/post/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/
+# Then include the file from you vhost or in nginx.conf
+# include snippets/phpmyadmin.conf;
+
+# source: https://www.linuxbabe.com/ubuntu/install-phpmyadmin-nginx-lemp-ubuntu-18-04-lts

@@ -31,6 +31,6 @@ server {
 }
 
 # Then include the file from you vhost or in nginx.conf
-# include snippets/phpmyadmin.conf;
+# include /etc/nginx/snippets/phpmyadmin.conf;
 
 # source: https://www.linuxbabe.com/ubuntu/install-phpmyadmin-nginx-lemp-ubuntu-18-04-lts

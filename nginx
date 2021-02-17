@@ -21,3 +21,43 @@ server {
     # Tells browser to redirect all request from http://example.com -> https://example2.com
     rewrite ^/$ http://example2.com redirect;
 }
+
+# Reverse Proxy
+server {
+        listen 80;
+
+        root /var/www/vhosts/test.com/public;
+
+        index index.php index.html index.htm index.nginx-debian.html;
+
+        server_name test.com;
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl;
+
+
+        ssl on;
+        ssl_certificate /etc/ssl/test.com/RapidSSL/test.com.chained.crt;
+        ssl_certificate_key /etc/ssl/test.com/RapidSSL/privatekey/private.key;
+
+        root /var/www/vhosts/botplatform.test.com/public;
+
+        index index.php index.html index.htm index.nginx-debian.html;
+
+        server_name test.com;
+
+        location / {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Scheme $scheme;
+                proxy_pass http://172.28.5.11:80;
+        }
+
+
+        location ~ /\.ht {
+               deny all;
+        }
+}
+# End Reverse Proxy

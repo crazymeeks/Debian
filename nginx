@@ -42,7 +42,7 @@ server {
         ssl_certificate /etc/ssl/test.com/RapidSSL/test.com.chained.crt;
         ssl_certificate_key /etc/ssl/test.com/RapidSSL/privatekey/private.key;
 
-        root /var/www/vhosts/botplatform.test.com/public;
+        root /var/www/vhosts/test.com/public;
 
         index index.php index.html index.htm index.nginx-debian.html;
 
